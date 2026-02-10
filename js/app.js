@@ -35,4 +35,27 @@ $(document).ready(function () {
       app.append(singleItem);
     });
   }
+
+  //add item
+
+  $(".input-items").on("submit", function (e) {
+    e.preventDefault();
+
+    const name = input.val().trim();
+    if (!name) return;
+
+    const items = getItems();
+
+    const newItem = {
+      id: Date.now().toString(),
+      name,
+      completed: false,
+    };
+
+    items.push(newItem);
+    saveItems(items);
+
+    input.val("");
+    renderItems();
+  });
 });
