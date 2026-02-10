@@ -57,15 +57,76 @@ $form.on("submit", function (e) {
 });
 
 //delete item
+
 function deleteItem(id) {
-  const items = getItems().filter((item) => item.id !== id);
-  saveItems(items);
+  const items = getItems();
+  const newItems = [];
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].id != id) {
+      newItems.push(items[i]);
+    }
+  }
+
+  saveItems(newItems);
   renderItems();
 }
 
 $app.on("click", ".remove-btn", function () {
   const id = $(this).closest(".single-item").data("id");
   deleteItem(id);
+});
+
+//toggle completed
+$app.on("change", "input[type=checkbox]", function () {
+  const id = $(this).closest(".single-item").data("id");
+
+  const items = getItems().map((item) =>
+    item.id === id ? { ...item, completed: this.checked } : item,
+  );
+
+  saveItems(items);
+  renderItems();
+});
+
+//update items
+// Update item function without map
+function updateItem(id, newValue) {
+  if (!newValue.trim()) {
+    renderItems();
+    return;
+  }
+
+  const items = getItems();
+
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].id == id) {
+      items[i].name = newValue.trim();
+      console.log(newValue);
+      break;
+    }
+  }
+
+  saveItems(items);
+  renderItems();
+}
+
+$app.on("click", ".edit-btn", function () {
+  const $itemDiv = $(this).closest(".single-item");
+  const id = $itemDiv.data("id");
+  const $textP = $itemDiv.find("p");
+  const oldValue = $textP.text().trim();
+
+  const $inputE1 = $(`<input type="text" class="item-input" />`).val(oldValue);
+  $textP.replaceWith($inputE1);
+  $inputE1.focus();
+
+  $inputE1.on("blur", function () {
+    updateItem(id, $inputE1.val());
+  });
+
+  $inputE1.on("keydown", function (e) {
+    if (e.key === "Enter") $inputE1.blur();
+  });
 });
 
 $(document).ready(renderItems);
