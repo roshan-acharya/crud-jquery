@@ -58,4 +58,13 @@ $(document).ready(function () {
     input.val("");
     renderItems();
   });
+
+  //delete item
+  app.on("click", ".remove-btn", function () {
+    const id = $(this).closest(".single-item").data("id");
+
+    const items = getItems().filter((item) => item.id !== id);
+    saveItems(items);
+    renderItems();
+  });
 });
