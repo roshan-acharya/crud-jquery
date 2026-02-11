@@ -89,7 +89,7 @@ $app.on("change", "input[type=checkbox]", function () {
 });
 
 //update items
-// Update item function without map
+
 function updateItem(id, newValue) {
   if (!newValue.trim()) {
     renderItems();
@@ -127,6 +127,17 @@ $app.on("click", ".edit-btn", function () {
   $inputE1.on("keydown", function (e) {
     if (e.key === "Enter") $inputE1.blur();
   });
+});
+
+$app.on("change", "input[type='checkbox']", function () {
+  const id = $(this).closest(".single-item").data("id");
+
+  const items = getItems().map((item) =>
+    item.id == id ? { ...item, completed: this.checked } : item,
+  );
+
+  saveItems(items);
+  renderItems();
 });
 
 $(document).ready(renderItems);
