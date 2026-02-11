@@ -1,4 +1,4 @@
-# 🛒 Grocery List App (jQuery CRUD)
+# 🛒 ToDo List App (jQuery CRUD)
 
 A simple **CRUD web application** to manage grocery items, built using **HTML, CSS, JavaScript, and jQuery**.  
 The app stores data in **localStorage**, so your list stays saved even after refreshing the page.
